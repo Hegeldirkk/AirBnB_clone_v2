@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Write a Bash script that sets up your web servers for the deployment of web_static
 apt-get -y update
 apt-get -y install nginx
@@ -18,13 +18,13 @@ echo "<html>
 </html>" >> /data/web_static/releases/test/index.html
 
 #Create a symbolic link
-ln -f -s /data/web_static/current /data/web_static/releases/test/
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # ownership of the /data/ folder to the ubuntu user AND group
-chwod -R ubuntu:ubuntu /data/
+chown -R ubuntu:ubuntu /data/
 
 #Update the Nginx configuration to serve the content 
-sed -i "\t location /hbnb_static/ {\n\t\t alias /data/web_static/current/hbnb_static/;\n\t\t autoindex off; \n\t }"
+sudo sed -i "\t location /hbnb_static/ {\n\t\t alias /data/web_static/current/hbnb_static/;\n\t\t autoindex off; \n\t }" /etc/nginx/sites-available/default
 
 #restart serveur
-service nginx restart
+sudo service nginx restart
