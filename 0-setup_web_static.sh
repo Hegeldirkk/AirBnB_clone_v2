@@ -18,13 +18,13 @@ echo "<html>
 </html>" >> /data/web_static/releases/test/index.html
 
 #Create a symbolic link
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # ownership of the /data/ folder to the ubuntu user AND group
-chown -R ubuntu:ubuntu /data/
+sudo chown -hR ubuntu:ubuntu /data/
 
 #Update the Nginx configuration to serve the content 
-sudo sed -i "\t location /hbnb_static/ {\n\t\t alias /data/web_static/current/hbnb_static/;\n\t\t autoindex off; \n\t }" /etc/nginx/sites-available/default
-
+sudo sed -i '41i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current;\n\t}\n' /etc/nginx/sites-available/default
+sudo ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
 #restart serveur
 sudo service nginx restart
